@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲爱的桂萍</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+            font-family: '宋体', Arial, sans-serif;
+        }
+        .text-line {
+            position: absolute;
+            color: red;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="heartCanvas"></canvas>
+
+    <script>
+        // 配置画布
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // 爱心绘制函数
+        function drawHeart(t) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+            return [centerX + x * 10, centerY + y * 10];
+        }
+
+        // 动态爱心动画
+        function animateHeart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'pink';
+            for (let i = 0; i < 2 * Math.PI; i += 0.01) {
+                const [x, y] = drawHeart(i);
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(animateHeart);
+        }
+
+        animateHeart();
+
+        // 动态显示情书函数
+        function displayText(lines, x, y, delay) {
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    const textElement = document.createElement('div');
+                    textElement.textContent = line;
+                    textElement.className = 'text-line';
+                    textElement.style.left = `${x}px`;
+                    textElement.style.top = `${y + index * 20}px`; // 每行向下偏移
+                    document.body.appendChild(textElement);
+
+                    // 渐显效果
+                    setTimeout(() => {
+                        textElement.style.opacity = 1;
+                    }, 100);
+                }, index * delay);
+            });
+        }
+
+        // 左右两侧情书内容
+        const leftLetter = [
+            "亲爱的桂萍你好，",
+            "我们长话短说，我直接直抒胸臆。",
+            "我写这封信的目的是为了跟你说一些话，并且跟你告白。",
+            "我就不说什么收到信怎么怎么样了，管你呢！",
+            "我先和你说的第一个东西是回忆，因为和你有很多美好的回忆。",
+            "在这一年我们去过很多城市很多地方，一起吃了很多美食，",
+            "一起玩了很多地方，和你在一起特别开心。",
+            "因为我可以肆无忌惮地做自己，我想叫就叫，想喊就喊。",
+            "想吃什么东西，你也会陪我去。",
+            "所以我要谢谢你，来到我的世界，你就像一束阳光照亮了我的心！",
+            "第二件事是我们之间存在的问题。",
+            "先讲我的缺点：情商低，说话直，不懂女生的心思，认死理，等等。",
+            "因为我有这些让人很难忍受的缺点，所以我要感谢你的包容与理解。",
+            "感谢你的耐心和陪伴，因为换一个人肯定就不会想着解决问题而是解决人，",
+            "所以很感谢你！"
+        ];
+
+        const rightLetter = [
+            "然后就是你的问题：敏感内耗太自卑，",
+            "你经常会做很多不切实际的幻想，幻想我有一天会喜欢上其他好看的人。",
+            "比你好的人，但是你每次这样想，我就会觉得你不信任我。",
+            "我就会觉得为什么一次又一次要举这种不可能发生的例子给我，",
+            "给我造成了苦恼，所以我希望你可以以后不举这种例子，",
+            "以后要自信一点，因为你之所以会这样想，就是因为你太自卑。",
+            "但是有什么好自卑的，你觉得我会遇到更好的。",
+            "但是如果我和你这样想的话，你不是早就有比我更好的人在身边啊（智宇哥）。",
+            "我为什么不会内耗呢，因为哪怕他比我学习好，哪怕比我成就高，",
+            "哪怕他比我有钱，我也不羡慕啊。",
+            "因为我觉得你不是这种人啊，你不会抛弃我，",
+            "所以我从来不会因为你身边出现优秀的人而内耗，",
+            "而去比较，让自己这么敏感，让自己不开心，我相信的从来不是自己而是你！",
+            "相信的不是自己，相信的是你！",
+            "我会把所有的偏爱和例外都给你！"
+        ];
+
+        const loveLeft = [
+            "老婆～不要怕，也不要内耗，因为不管怎么样，我都会一直陪着你。",
+            "不要和人攀比，因为在我眼里，你就是最好的！",
+            "遇见你是故事的开始，走到底是余生的欢喜。",
+            "一生不轻爱，一爱爱一生！",
+            "我不敢说自己一生都会爱你，但是在能看到你的日子里，",
+            "只想对你一个人好，纵使生活没那么容易，我也想把你放在未来里。",
+            "一生欢喜，不为世俗所染！"
+        ];
+
+        const loveRight = [
+            "第三就是告白啦，我觉得写信，那就必须告白。",
+            "因为这个是最可以直抒胸臆的方式，但是告白呢就是承诺，说到就得做到。",
+            "所以我会用我一生来履行我下面说的话！",
+            "害，跟你说这种情话还怪不好意思的勒，所以长话短说：",
+            "我们之间是命运的安排，特别有缘份，为什么呢，",
+            "因为如果没有，我也不会遇见你，也不会鼓起勇气做重要的事。",
+            "虽然我有点直，情商低，但是爱你是真的对你也是认真的。",
+            "有时候词不达意，希望你不要介意。",
+            "时间会证明我不是一时兴起，不要质疑我对你的爱，",
+            "也不要低估我想和你走下去的决心。",
+            "你之前和我说了你在南京许下的愿望，",
+            "现在我跟你说我在杭州的：我一边说顺其自然，万物皆有安排，",
+            "但在灵隐寺佛像前跪下的那刻心里想的是与你长长久久！"
+        ];
+
+        // 动态显示内容
+        displayText(leftLetter, centerX - 400, centerY - 200, 1500); // 左上
+        displayText(rightLetter, centerX + 150, centerY - 200, 1500); // 右上
+        displayText(loveLeft, centerX - 400, centerY + 100, 1500); // 左下
+        displayText(loveRight, centerX + 150, centerY + 100, 1500); // 右下
+    </script>
+</body>
+</html>
